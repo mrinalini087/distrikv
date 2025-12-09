@@ -38,11 +38,10 @@ func handleSet(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Decide which node gets the data
 	targetNode := getNodeForKey(req.Key)
 	fmt.Printf("Routing key '%s' to %s\n", req.Key, targetNode)
 
-	// Forward the request to that node
+
 	jsonData, _ := json.Marshal(req)
 	resp, err := http.Post(targetNode+"/set", "application/json", bytes.NewBuffer(jsonData))
 	if err != nil {
@@ -63,7 +62,7 @@ func handleGet(w http.ResponseWriter, r *http.Request) {
 
 	targetNode := getNodeForKey(key)
 	
-	// Forward the get request
+
 	resp, err := http.Get(targetNode + "/get?key=" + key)
 	if err != nil {
 		http.Error(w, "Failed to connect to node", http.StatusInternalServerError)
